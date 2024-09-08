@@ -1,0 +1,77 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model meetings {
+  id           String         @unique(map: "Meetings_id_key")
+  user_id      String
+  subject      String
+  description  String
+  meeting_date DateTime
+  status       String
+  photo        String
+  created_at   DateTime       @default(now())
+  updated_at   DateTime       @default(now())
+  profile_id   String
+  users        users          @relation(fields: [user_id], references: [id], onDelete: Cascade, map: "Meetings_user_id_fkey")
+  profile      user_profiles  @relation(fields: [profile_id], references: [id], onDelete: Cascade, map: "Meetings_user_profile_id_fkey")
+  notification notification[]
+
+  @@index([user_id], map: "Meetings_user_id_fkey")
+  @@index([profile_id], map: "Meetings_user_profile_id_fkey")
+}
+
+model notification {
+  id         String   @unique(map: "Notification_id_key")
+  user_id    String
+  meeting_id String
+  type       String
+  message    String
+  status     String
+  sent_at    DateTime @default(now())
+  created_at DateTime @default(now())
+  meetings   meetings @relation(fields: [meeting_id], references: [id], onDelete: Cascade, map: "Notification_meeting_id_fkey")
+  users      users    @relation(fields: [user_id], references: [id], onDelete: Cascade, map: "Notification_user_id_fkey")
+
+  @@index([meeting_id], map: "Notification_meeting_id_fkey")
+  @@index([user_id], map: "Notification_user_id_fkey")
+}
+
+model user_profiles {
+  id        String     @unique(map: "User_profiles_id_key")
+  user_id   String
+  full_name String
+  age       Int
+  born      DateTime
+  phone     BigInt
+  ktp       BigInt
+  educate   String
+  address   String
+  meetings  meetings[]
+  users     users      @relation(fields: [user_id], references: [id], onDelete: Cascade, map: "User_profiles_user_id_fkey")
+
+  @@index([user_id], map: "User_profiles_user_id_fkey")
+}
+
+model users {
+  id            String          @unique(map: "Users_id_key")
+  username      String
+  email         String          @unique(map: "Users_email_key")
+  password      String
+  role          users_role
+  created_at    DateTime        @default(now())
+  meetings      meetings[]
+  notification  notification[]
+  user_profiles user_profiles[]
+}
+
+enum users_role {
+  ADMIN
+  GUEST
+}
