@@ -20,11 +20,12 @@ export const loginSchema = z.object({
 export type loginValue = z.infer<typeof loginSchema>;
 
 export const userProfileSchema = z.object({
+  user_id: z.string(),
   full_name: requiredString,
   gender: requiredString,
   age: z.string().min(1, "Input wajib diisi"),
   born: requiredString,
-  phone: z.string(),
+  phone: requiredString,
   ktp: z
     .string()
     .min(16, "Isian harus 16 angka")

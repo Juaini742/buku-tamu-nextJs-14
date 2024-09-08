@@ -2,13 +2,18 @@ import { Card } from "@/components/ui/card";
 import Image from "next/image";
 import welcomeImage from "Image/images/welcome.png";
 import Help from "@/components/main/home/Help";
+import { getServerUser } from "@/lib/getServerUser";
 
-export default function Home() {
+export default async function Home() {
+  const user = await getServerUser();
+
   return (
     <>
       <Card className="flex items-center p-3 lg:h-44 bg-blue-200 relative">
         <div className="w-[65%] md:w-1/2">
-          <h3 className="text-xl lg:text-4xl font-bold">Hello, John Doe</h3>
+          <h3 className="text-xl lg:text-4xl font-bold">
+            Hello, {user?.username ?? "User"}
+          </h3>
           <p className="text-[11px] md:text-sm lg:text-base text-muted-foreground">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis
             quod totam eaque adipisci, quia ea sint pariatur harum.

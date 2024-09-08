@@ -1,20 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { getServerProfile } from "@/lib/getServerProfile";
 import Link from "next/link";
 
-const user = {
-  username: "Dody123",
-  email: "Dody@gmail.com",
-  full_name: "Dody",
-  gender: "Laki-Laki",
-  age: 24,
-  born: "xx day 2024",
-  KTP: 23984729342,
-  educate: "S2",
-  address: "Jl.Pancasila Pantai Hambawang Barat",
-};
+async function Page() {
+  const user = await getServerProfile();
 
-function Page() {
+  if (!user) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div>
       <Card className="mb-5 p-2">
@@ -24,8 +19,8 @@ function Page() {
           <li>Nama Lengkap: {user.full_name}</li>
           <li>Jenis Kelamin: {user.gender}</li>
           <li>Umur: {user.age}</li>
-          <li>Tanggal Lahir: {user.born}</li>
-          <li>KTP: {user.KTP}</li>
+          <li>Tanggal Lahir: {user.born?.toDateString()}</li>
+          <li>KTP: {user.ktp?.toString()}</li>
           <li>Pendidikan: {user.educate}</li>
           <li>Alamat Lengkap: {user.address}</li>
         </ul>

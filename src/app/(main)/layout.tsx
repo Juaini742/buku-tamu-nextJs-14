@@ -1,8 +1,13 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Sidebar } from "./sidebar";
 import BreadcrumbIndicator from "./breadcrumb";
+import DialogProfile from "./dialogProfile";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default async function Layout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <div className="h-screen flex overflow-hidden relative">
       <Sidebar />
@@ -16,6 +21,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           {children}
         </ScrollArea>
       </div>
+      <DialogProfile />
     </div>
   );
 }

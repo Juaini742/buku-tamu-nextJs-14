@@ -44,9 +44,10 @@ model notification {
 }
 
 model user_profiles {
-  id        String     @unique(map: "User_profiles_id_key")
+  id        String     @id @unique(map: "User_profiles_id_key")
   user_id   String
   full_name String
+  gender    String
   age       Int
   born      DateTime
   phone     BigInt

@@ -1,5 +1,5 @@
 import React from "react";
-import BioForm from "./form";
+// import BioForm from "./form";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ChevronsLeft } from "lucide-react";
@@ -12,9 +12,9 @@ function Page() {
           <ChevronsLeft />
         </Button>
       </Link>
-      <div className="md:px-1 mt-4">
+      {/* <div className="md:px-1 mt-4">
         <BioForm />
-      </div>
+      </div> */}
     </div>
   );
 }

@@ -17,14 +17,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useToast } from "@/hooks/use-toast";
 import { userProfileValue, userProfileSchema } from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTransition } from "react";
 import { Controller, useForm } from "react-hook-form";
+import postBio from "./action";
 
-function BioForm() {
+function BioForm({ user_id }: { user_id: string | undefined }) {
+  const { toast } = useToast();
+  const [isPending, startTransition] = useTransition();
   const form = useForm<userProfileValue>({
     resolver: zodResolver(userProfileSchema),
     defaultValues: {
+      user_id: user_id,
       full_name: "",
       gender: "",
       age: "",
@@ -38,6 +44,33 @@ function BioForm() {
 
   async function onSubmit(values: userProfileValue) {
     console.log(values);
+
+    startTransition(async () => {
+      try {
+        const { error } = await postBio(values);
+
+        if (error) {
+          toast({
+            variant: "destructive",
+            title: "Gagal",
+            description: "Silah coba lagi",
+          });
+          return;
+        }
+
+        toast({
+          title: "Suksess",
+          description: "Profile berhasil diisi",
+        });
+        window.location.replace("/");
+      } catch (error) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Terjadi kesalahan: ",
+        });
+      }
+    });
   }
   return (
     <Form {...form}>
@@ -160,7 +193,13 @@ function BioForm() {
             </FormItem>
           )}
         />
-        <Button variant="default" className="mt-5 h-[3rem] w-full text-lg">
+        <Button
+          disabled={isPending}
+          variant="default"
+          className={`mt-5 h-[3rem] w-full text-lg ${
+            isPending && "animate-pulse"
+          }`}
+        >
           Simpan
         </Button>
       </form>
