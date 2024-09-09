@@ -25,6 +25,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { ButtonReport } from "@/components/custom/ButtonReport";
 
 const meetingApi = async () => {
   try {
@@ -59,7 +60,8 @@ function GetDataMeetingAdmin() {
   return (
     <div className="mt-7">
       <div className="overflow-x-auto">
-        <div className="w-full bg-blue-50 flex justify-end mb-2">
+        <div className="w-full bg-blue-50 flex justify-between gap-3 mb-2">
+          <ButtonReport />
           <Button
             variant="outline"
             onClick={() => refetch()}

@@ -1,10 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 
-const adminRoutes = ["/admin", "/admin/about"];
-const guestRoutes = ["/", "/about", "/table"];
+const adminRoutes = [
+  "/admin",
+  "/admin/about",
+  "/admin/meetings",
+  "/admin/profile",
+  "/admin/table",
+];
+const guestRoutes = ["/", "/about", "/meetings", "/profile", "/profile/bio"];
+const apiRoutes = [
+  "/api/meetings",
+  "/api/meetings/",
+  "/api/user",
+  "/api/profiles",
+  "/api/profiles/",
+  "/api/report",
+];
 
-const protectedRoutes = [...adminRoutes, ...guestRoutes];
+const protectedRoutes = [...adminRoutes, ...guestRoutes, ...apiRoutes];
 const publicRoutes = ["/login", "/register"];
 
 export default async function middleware(req: NextRequest) {

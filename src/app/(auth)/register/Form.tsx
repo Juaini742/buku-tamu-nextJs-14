@@ -18,14 +18,12 @@ import { LogIn } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { register } from "./action";
 import { useTransition } from "react";
-import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 
 function RegisterForm() {
   const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
-  const router = useRouter();
   const form = useForm<registerValue>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -49,7 +47,7 @@ function RegisterForm() {
         const result = await signIn("credentials", {
           email: values.email,
           password: values.password,
-          redirect: true,
+          redirect: false,
         });
 
         if (result?.error) {
@@ -59,8 +57,6 @@ function RegisterForm() {
             description: "Gagal masuk setelah registrasi.",
           });
           return;
-        } else {
-          router.push("/");
         }
       }
     });
