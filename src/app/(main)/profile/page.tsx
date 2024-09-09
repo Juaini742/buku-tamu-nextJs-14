@@ -1,7 +1,7 @@
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { getServerProfile } from "@/lib/getServerProfile";
-import Link from "next/link";
+// import Link from "next/link";
 
 async function Page() {
   const user = await getServerProfile();
@@ -25,14 +25,14 @@ async function Page() {
           <li>Alamat Lengkap: {user.address}</li>
         </ul>
       </Card>
-      <div className="flex gap-3">
+      {/* <div className="flex gap-3">
         <Link href="profile/bio">
           <Button>Perbaharui Biodata</Button>
         </Link>
         <Link href="profile/bio">
           <Button>Perbaharui Email</Button>
         </Link>
-      </div>
+      </div> */}
     </div>
   );
 }

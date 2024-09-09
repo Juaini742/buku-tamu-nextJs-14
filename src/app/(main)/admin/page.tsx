@@ -1,7 +1,9 @@
+import Help from "@/components/custom/Help";
+
 export default async function Page() {
   return (
     <div>
-      <h1>Halaman admin</h1>
+      <Help />
     </div>
   );
 }

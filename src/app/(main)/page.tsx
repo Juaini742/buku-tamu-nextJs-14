@@ -1,8 +1,8 @@
 import { Card } from "@/components/ui/card";
 import Image from "next/image";
 import welcomeImage from "Image/images/welcome.png";
-import Help from "@/components/main/home/Help";
 import { getServerUser } from "@/lib/getServerUser";
+import Help from "@/components/custom/Help";
 
 export default async function Home() {
   const user = await getServerUser();

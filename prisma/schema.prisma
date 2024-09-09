@@ -9,7 +9,7 @@ datasource db {
 }
 
 model meetings {
-  id           String         @unique(map: "Meetings_id_key")
+  id           String         @id @unique(map: "Meetings_id_key")
   user_id      String
   subject      String
   description  String
@@ -28,7 +28,7 @@ model meetings {
 }
 
 model notification {
-  id         String   @unique(map: "Notification_id_key")
+  id         String   @id @unique(map: "Notification_id_key")
   user_id    String
   meeting_id String
   type       String
@@ -45,7 +45,7 @@ model notification {
 
 model user_profiles {
   id        String     @id @unique(map: "User_profiles_id_key")
-  user_id   String
+  user_id   String     @unique
   full_name String
   gender    String
   age       Int
@@ -61,7 +61,7 @@ model user_profiles {
 }
 
 model users {
-  id            String          @unique(map: "Users_id_key")
+  id            String          @id @unique(map: "Users_id_key")
   username      String
   email         String          @unique(map: "Users_email_key")
   password      String

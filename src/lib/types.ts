@@ -45,3 +45,31 @@ export const meetingsSchema = z.object({
 });
 
 export type meetingsValue = z.infer<typeof meetingsSchema>;
+
+export interface ProfileType {
+  id?: string;
+  user_id?: string;
+  full_name?: string;
+  gender?: string;
+  age?: number;
+  born: string | number;
+  phone: string | number;
+  ktp: string | number;
+  educate: string;
+  address: string;
+}
+
+export interface MeetingType {
+  meeting_date: string;
+  subject: string;
+  description: string;
+  status: string;
+  photo: string;
+  created_at: string;
+  id: string;
+  profile: ProfileType;
+  profile_id: string;
+  updated_at: string;
+  user_id: string;
+  users: { email: string; username?: string };
+}

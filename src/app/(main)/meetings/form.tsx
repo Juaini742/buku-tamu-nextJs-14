@@ -17,14 +17,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useToast } from "@/hooks/use-toast";
 import { meetingsValue, meetingsSchema } from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
+import useSubmitMeetings from "./mutation";
 
 function MeetingsForm() {
-  const { toast } = useToast();
-
+  const mutation = useSubmitMeetings();
   const form = useForm<meetingsValue>({
     resolver: zodResolver(meetingsSchema),
     defaultValues: {
@@ -32,25 +31,15 @@ function MeetingsForm() {
       subject: "",
       description: "",
       status: "pending",
-      photo: null,
+      photo: "",
     },
   });
 
   async function onSubmit(values: meetingsValue) {
-    try {
-      toast({
-        title: "Berhasil",
-        description: "Pengajuan berhasil dibuat.",
-      });
-      console.log(values);
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Gagal",
-        description: "Pengajuan gagal dibuat.",
-      });
-    }
+    await mutation.mutateAsync(values);
+    form.reset();
   }
+
   return (
     <>
       <Form {...form}>
@@ -112,13 +101,16 @@ function MeetingsForm() {
               </FormItem>
             )}
           />
-          <Button variant="default" className="mt-5 h-[3rem] w-full text-lg">
-            Kirim
+          <Button
+            disabled={mutation.isPending}
+            variant="default"
+            className="mt-5 h-[3rem] w-full text-lg"
+          >
+            {mutation.isPending ? "Sedang Proses..." : "Kirim"}
           </Button>
         </form>
       </Form>
     </>
   );
 }
-
 export default MeetingsForm;

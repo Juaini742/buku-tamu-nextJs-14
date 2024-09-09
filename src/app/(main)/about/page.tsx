@@ -1,7 +1,9 @@
+import About from "@/components/custom/about";
+
 function Page() {
   return (
     <div>
-      <h2>About Page</h2>
+      <About />
     </div>
   );
 }

@@ -94,7 +94,7 @@ function LoginForm() {
           <div className="mr-2">
             <LogIn className="size-5" />
           </div>
-          Daftar
+          Masuk
         </Button>
       </form>
     </Form>

@@ -31,12 +31,6 @@ const navItems = [
     icon: <BookUser className="size-4" />,
   },
   {
-    title: "Tabel",
-    type: "nav",
-    path: "/table",
-    icon: <Table2 className="size-4" />,
-  },
-  {
     title: "Profil",
     type: "nav",
     path: "/profile",
@@ -84,7 +78,9 @@ export function Sidebar() {
 
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
-    signOut({ redirect: true });
+    signOut({ redirect: true }).then(() => {
+      window.location.replace("/login");
+    });
   };
   return (
     <>
