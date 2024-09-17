@@ -8,8 +8,8 @@ import bellIcon from "Image/images/bell.png";
 import Image from "next/image";
 import SidebarItem from "./sidebarItem";
 import NotificationSidebar from "./notification";
-import { signOut } from "next-auth/react";
 import { useUser } from "@/hooks/useUser";
+import { logout } from "@/actions/logout";
 
 const navItems = [
   {
@@ -76,12 +76,14 @@ export function Sidebar() {
   const [isVIsible, setIsVIsible] = useState(false);
   const [isVIsibleNotification, setIsVIsibleNotification] = useState(false);
 
-  const handleLogout = async () => {
-    await fetch("/api/auth/logout", { method: "POST" });
-    signOut({ redirect: true }).then(() => {
-      window.location.replace("/login");
+  console.log(user);
+
+  const handleLogout = () => {
+    logout().then(() => {
+      window.location.reload();
     });
   };
+
   return (
     <>
       <button

@@ -17,10 +17,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { LogIn } from "lucide-react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-import { getSession, signIn } from "next-auth/react";
+import { useTransition } from "react";
+import { login } from "./action";
 
 function LoginForm() {
   const { toast } = useToast();
+  const [isPending, startTransition] = useTransition();
   const form = useForm<loginValue>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -30,27 +32,23 @@ function LoginForm() {
   });
 
   async function onSubmit(values: loginValue) {
-    const result = await signIn("credentials", {
-      email: values.email,
-      password: values.password,
-      redirect: false,
-    });
-
-    if (result?.error) {
-      toast({
-        variant: "destructive",
-        title: "Gagal",
-        description: "Login gagal dilakukan",
+    startTransition(() => {
+      login(values).then((data) => {
+        if (data?.error) {
+          toast({
+            variant: "destructive",
+            title: "Gagal",
+            description: data.error,
+          });
+        } else if (data?.success) {
+          if (data?.role === "GUEST") {
+            window.location.replace("/");
+          } else if (data?.role === "ADMIN") {
+            window.location.replace("/admin");
+          }
+        }
       });
-    } else if (result?.ok) {
-      const session = await getSession();
-      const role = session?.user?.role;
-      if (role === "GUEST") {
-        window.location.replace("/");
-      } else if (role === "ADMIN") {
-        window.location.replace("/admin");
-      }
-    }
+    });
   }
 
   return (
@@ -87,14 +85,14 @@ function LoginForm() {
           <Link href="/register"> Klik disini untuk daftar</Link>
         </div>
         <Button
-          // disabled={isPending}
+          disabled={isPending}
           variant="default"
           className="h-[3rem] w-full text-lg"
         >
           <div className="mr-2">
             <LogIn className="size-5" />
           </div>
-          Masuk
+          {isPending ? "Proses..." : "Masuk"}
         </Button>
       </form>
     </Form>

@@ -1,56 +1,54 @@
-import { NextRequest, NextResponse } from "next/server";
+import NextAuth from "next-auth";
+import { authRoute, protectedRoutes, publicRoutes } from "./routes";
+import authConfig from "./auth.config";
 import { getToken } from "next-auth/jwt";
 
-const adminRoutes = [
-  "/admin",
-  "/admin/about",
-  "/admin/meetings",
-  "/admin/profile",
-  "/admin/table",
-];
-const guestRoutes = ["/", "/about", "/meetings", "/profile", "/profile/bio"];
-const apiRoutes = [
-  "/api/meetings",
-  "/api/meetings/",
-  "/api/user",
-  "/api/profiles",
-  "/api/profiles/",
-  "/api/report",
-];
+const { auth } = NextAuth(authConfig);
+const secret = process.env.NEXTAUTH_SECRET as string;
 
-const protectedRoutes = [...adminRoutes, ...guestRoutes, ...apiRoutes];
-const publicRoutes = ["/login", "/register"];
+export default auth(async (req) => {
+  const { nextUrl } = req;
+  const isLoggedIn = !!req.auth;
 
-export default async function middleware(req: NextRequest) {
-  const path = req.nextUrl.pathname;
-  const isProtectedRoute = protectedRoutes.includes(path);
-  const isPublicRoute = publicRoutes.includes(path);
+  const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
+  const isProtectedRoute = protectedRoutes.includes(nextUrl.pathname);
+  const isAuthRoute = authRoute.includes(nextUrl.pathname);
 
-  const token = await getToken({ req });
+  const token = await getToken({ req, secret });
 
-  if (isProtectedRoute && !token) {
-    return NextResponse.redirect(new URL("/login", req.nextUrl));
+  if (isAuthRoute) {
+    if (isLoggedIn) {
+      return Response.redirect(new URL("/", nextUrl));
+    }
+    return;
+  }
+
+  if (!isLoggedIn && !isPublicRoute && isProtectedRoute) {
+    return Response.redirect(new URL("/login", nextUrl));
   }
 
   if (token) {
     if (isProtectedRoute) {
-      if (path === "/admin" && token.role === "GUEST") {
-        return NextResponse.redirect(new URL("/", req.nextUrl));
+      if (nextUrl.pathname.startsWith("/admin") && token.role === "GUEST") {
+        return Response.redirect(new URL("/", nextUrl));
       }
     }
 
     if (isPublicRoute) {
       if (token.role === "ADMIN") {
-        return NextResponse.redirect(new URL("/admin", req.nextUrl));
+        return Response.redirect(new URL("/admin", nextUrl));
       } else if (token.role === "GUEST") {
-        return NextResponse.redirect(new URL("/", req.nextUrl));
+        return Response.redirect(new URL("/", nextUrl));
       }
     }
   }
 
-  return NextResponse.next();
-}
+  return;
+});
 
 export const config = {
-  matcher: [...protectedRoutes, ...publicRoutes],
+  matcher: [
+    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
+    "/(api|trpc)(.*)",
+  ],
 };
