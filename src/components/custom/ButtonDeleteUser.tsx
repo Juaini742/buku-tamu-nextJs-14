@@ -16,6 +16,11 @@ import { useDeleteUser } from "@/app/(main)/admin/table/mutation";
 
 export const ButtonDeleteUse = ({ id }: { id: string }) => {
   const mutation = useDeleteUser();
+
+  const onClick = () => {
+    mutation.mutate(id);
+  };
+
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -31,9 +36,7 @@ export const ButtonDeleteUse = ({ id }: { id: string }) => {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogAction onClick={() => mutation.mutate(id)}>
-            Ya
-          </AlertDialogAction>
+          <AlertDialogAction onClick={onClick}>Ya</AlertDialogAction>
           <AlertDialogCancel>Tidak</AlertDialogCancel>
         </AlertDialogFooter>
       </AlertDialogContent>

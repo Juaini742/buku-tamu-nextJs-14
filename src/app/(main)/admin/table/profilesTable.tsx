@@ -1,6 +1,6 @@
 "use client";
 
-import { Trash2Icon } from "lucide-react";
+import { RefreshCw, Trash2Icon } from "lucide-react";
 import DialogUserDetails from "./profilesDialog";
 import { useQuery } from "@tanstack/react-query";
 import { ProfileType } from "@/lib/types";
@@ -16,6 +16,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useDeleteProfile } from "./mutation";
+import { Button } from "@/components/ui/button";
 
 const apiProfile = async () => {
   try {
@@ -34,7 +35,7 @@ const apiProfile = async () => {
 
 function ProfilesTable() {
   const mutation = useDeleteProfile();
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ["profiles"],
     queryFn: apiProfile,
   });
@@ -42,6 +43,15 @@ function ProfilesTable() {
   return (
     <>
       <div className="overflow-x-auto">
+        <div className="w-full bg-blue-50 flex justify-end gap-3 mb-2">
+          <Button
+            variant="outline"
+            onClick={() => refetch()}
+            className="py-2 px-3"
+          >
+            <RefreshCw className="size-4" />
+          </Button>
+        </div>
         <table className="min-w-full bg-white">
           <thead className="bg-blue-50">
             <tr>

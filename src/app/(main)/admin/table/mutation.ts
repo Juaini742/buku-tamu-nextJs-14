@@ -23,6 +23,7 @@ export function useDeleteUser() {
       });
 
       queryClient.invalidateQueries({ queryKey: ["meetings"] });
+      window.location.reload();
     },
     onError: () => {
       toast({

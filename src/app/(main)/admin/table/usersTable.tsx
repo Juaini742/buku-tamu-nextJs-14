@@ -28,7 +28,7 @@ async function UsersTable() {
           <tbody>
             {users?.map((item, index) => (
               <tr
-                key={index}
+                key={item.id}
                 className={`hover:bg-zinc-200 transition duration-300 ${
                   index % 2 === 1 ? "bg-zinc-100" : ""
                 }`}
