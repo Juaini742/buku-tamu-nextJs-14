@@ -2,7 +2,7 @@
 import { Card } from "@/components/ui/card";
 import { getServerProfile } from "@/lib/getServerProfile";
 import Image from "next/image";
-import profileImage from "Image/images/blank.jpg";
+import profileImage from "Image/images/user.png";
 // import Link from "next/link";
 
 async function Page() {
