@@ -1,6 +1,8 @@
 // import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { getServerProfile } from "@/lib/getServerProfile";
+import Image from "next/image";
+import profileImage from "Image/images/blank.jpg";
 // import Link from "next/link";
 
 async function Page() {
@@ -12,6 +14,9 @@ async function Page() {
 
   return (
     <div>
+      <div className="p-2">
+        <Image src={profileImage} alt="Profile" className="w-32 rounded-md" />
+      </div>
       <Card className="mb-5 p-2">
         <ul className="flex flex-col gap-3">
           <li>Username: {user.username}</li>

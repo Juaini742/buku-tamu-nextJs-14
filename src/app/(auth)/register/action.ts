@@ -4,21 +4,15 @@ import prisma from "@/lib/prisma";
 import { registerSchema, registerValue } from "@/lib/types";
 import { isRedirectError } from "next/dist/client/components/redirect";
 import * as bcrypt from "bcrypt-ts";
-import { redirect } from "next/navigation";
 
-export async function register(
-  credentials: registerValue
-): Promise<{ error?: string }> {
+export async function register(credentials: registerValue) {
   try {
-    const { username, email, password, role } =
-      registerSchema.parse(credentials);
+    const { name, email, password, role } = registerSchema.parse(credentials);
 
     const salt = bcrypt.genSaltSync(10);
     const passwordHashing = await bcrypt.hashSync(password, salt);
 
-    const userId = crypto.randomUUID();
-
-    const existingEmail = await prisma.users.findFirst({
+    const existingEmail = await prisma.user.findFirst({
       where: {
         email,
       },
@@ -30,20 +24,19 @@ export async function register(
       };
     }
 
-    await prisma.users.create({
+    await prisma.user.create({
       data: {
-        id: userId,
-        username,
+        name,
         email,
         password: passwordHashing,
         role,
       },
     });
 
-    return redirect("/");
+    return { success: "Pendaftaran berhasil dilakukan", error: null };
   } catch (error) {
     if (isRedirectError(error)) throw error;
     console.error(error);
-    return { error: "Something went error" };
+    return { error: "Something went wrong" };
   }
 }

@@ -1,3 +1,5 @@
+import { format } from "date-fns";
+
 interface Data {
   meeting_date: string;
   description: string;
@@ -110,7 +112,10 @@ export const reportTemplate = (data: Data[]) => {
                   ${index + 1}
                 </td>
                 <td style="padding: 8px; border: 1px solid #ccc;">
-                  ${item.meeting_date}
+                 ${format(
+                   new Date(item.meeting_date),
+                   "cccc, dd-MM-yyyy, HH:mm"
+                 )}
                 </td>
                 <td style="padding: 8px; border: 1px solid #ccc;">
                   ${item.profile.full_name}

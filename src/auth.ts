@@ -6,6 +6,10 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import authConfig from "./auth.config";
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
+  pages: {
+    signIn: "/login",
+    error: "/error",
+  },
   callbacks: {
     async session({ token, session }) {
       if (token.sub && session.user) {
@@ -14,7 +18,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
 
       if (token.role && session.user) {
         session.user.role = token.role as users_role;
-        session.user.username = token.username;
+        session.user.name = token.name;
       }
 
       return session;
@@ -26,7 +30,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       if (!existingUser) return token;
 
       token.role = existingUser.role as users_role;
-      token.username = existingUser.username;
+      token.username = existingUser.name as string;
 
       return token;
     },

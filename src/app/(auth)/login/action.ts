@@ -15,8 +15,14 @@ export const login = async (values: z.infer<typeof loginSchema>) => {
 
   const { email, password } = validatedFields.data;
 
+  console.log(email);
+
   try {
     const user = await getUserByEmail(email);
+
+    if (!user) {
+      return { success: null, error: "Akun tidak ditemukan", role: null };
+    }
 
     if (user) {
       await signIn("credentials", {
@@ -42,5 +48,18 @@ export const login = async (values: z.infer<typeof loginSchema>) => {
       }
     }
     throw error;
+  }
+};
+
+export const googleLogin = async () => {
+  try {
+    await signIn("google", {
+      redirect: true,
+      callbackUrl: "/",
+    });
+
+    return { success: true, error: null };
+  } catch (error) {
+    return { error: "Something went wrong", success: false };
   }
 };

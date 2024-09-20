@@ -41,7 +41,7 @@ export async function GET() {
     return new NextResponse(pdfBuffer, {
       headers: {
         "Content-Type": "application/pdf",
-        "Content-Disposition": "attachment; filename=report.pdf",
+        "Content-Disposition": "inline; filename=report.pdf",
       },
     });
   } catch (error) {

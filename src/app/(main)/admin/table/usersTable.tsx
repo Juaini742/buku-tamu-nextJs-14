@@ -2,10 +2,10 @@ import prisma from "@/lib/prisma";
 import { ButtonDeleteUse } from "@/components/custom/ButtonDeleteUser";
 
 async function UsersTable() {
-  const users = await prisma.users.findMany({
+  const users = await prisma.user.findMany({
     select: {
       id: true,
-      username: true,
+      name: true,
       email: true,
       role: true,
       created_at: true,
@@ -34,7 +34,7 @@ async function UsersTable() {
                 }`}
               >
                 <td className="text-sm py-2 px-4">{index + 1}</td>
-                <td className="text-sm py-2 px-4">{item.username}</td>
+                <td className="text-sm py-2 px-4">{item.name}</td>
                 <td className="text-sm py-2 px-4">{item.email}</td>
                 <td className="text-sm py-2 px-4">
                   <span

@@ -2,6 +2,7 @@ import { Card } from "@/components/ui/card";
 import LoginForm from "./Form";
 import Image from "next/image";
 import imageUrl from "Image/images/logoStatistik black.png";
+// import LoginGoogleButton from "@/components/auth/login-google-button";
 
 export default function Page() {
   return (
@@ -11,6 +12,8 @@ export default function Page() {
           <Image src={imageUrl} alt="Logo" className="w-32 md:w-52" />
         </div>
         <LoginForm />
+        {/* <p className="py-2 text-center text-muted-foreground">atau</p>
+        <LoginGoogleButton /> */}
       </Card>
     </div>
   );

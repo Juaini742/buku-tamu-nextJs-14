@@ -9,15 +9,14 @@ export async function register(
   credentials: registerValue
 ): Promise<{ error?: string }> {
   try {
-    const { username, email, password, role } =
-      registerSchema.parse(credentials);
+    const { name, email, password, role } = registerSchema.parse(credentials);
 
     const salt = bcrypt.genSaltSync(10);
     const passwordHashing = await bcrypt.hashSync(password, salt);
 
     const userId = crypto.randomUUID();
 
-    const existingEmail = await prisma.users.findFirst({
+    const existingEmail = await prisma.user.findFirst({
       where: {
         email,
       },
@@ -29,10 +28,10 @@ export async function register(
       };
     }
 
-    await prisma.users.create({
+    await prisma.user.create({
       data: {
         id: userId,
-        username,
+        name,
         email,
         password: passwordHashing,
         role,

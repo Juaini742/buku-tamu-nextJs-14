@@ -4,8 +4,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgres"
-  url      = env("POSTGRES_URL")
+  provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
 model meetings {
@@ -19,8 +19,8 @@ model meetings {
   created_at   DateTime       @default(now())
   updated_at   DateTime       @default(now())
   profile_id   String
-  users        User           @relation(fields: [user_id], references: [id], onDelete: Cascade, map: "Meetings_user_id_fkey_unique")
-  profile      user_profiles  @relation(fields: [profile_id], references: [id], onDelete: Cascade, map: "Meetings_user_profile_id_fkey_unique")
+  users        User           @relation(fields: [user_id], references: [id], onDelete: Cascade, map: "Meetings_user_id_fkey")
+  profile      user_profiles  @relation(fields: [profile_id], references: [id], onDelete: Cascade, map: "Meetings_user_profile_id_fkey")
   notification notification[]
 
   @@index([user_id], map: "Meetings_user_id_fkey")
@@ -36,8 +36,8 @@ model notification {
   status     String
   sent_at    DateTime @default(now())
   created_at DateTime @default(now())
-  meetings   meetings @relation(fields: [meeting_id], references: [id], onDelete: Cascade, map: "Notification_meeting_id_fkey_unique")
-  users      User     @relation(fields: [user_id], references: [id], onDelete: Cascade, map: "Notification_user_id_fkey_unique")
+  meetings   meetings @relation(fields: [meeting_id], references: [id], onDelete: Cascade, map: "Notification_meeting_id_fkey")
+  users      User     @relation(fields: [user_id], references: [id], onDelete: Cascade, map: "Notification_user_id_fkey")
 
   @@index([meeting_id], map: "Notification_meeting_id_fkey")
   @@index([user_id], map: "Notification_user_id_fkey")
@@ -55,7 +55,7 @@ model user_profiles {
   address   String
   gender    String
   meetings  meetings[]
-  users     User       @relation(fields: [user_id], references: [id], onDelete: Cascade, map: "User_profiles_user_id_fkey_unique")
+  users     User       @relation(fields: [user_id], references: [id], onDelete: Cascade, map: "User_profiles_user_id_fkey")
 
   @@index([user_id], map: "User_profiles_user_id_fkey")
 }

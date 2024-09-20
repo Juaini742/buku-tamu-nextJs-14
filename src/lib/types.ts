@@ -4,7 +4,7 @@ import "next-auth";
 const requiredString = z.string().trim().min(1, "Input ini wajib diisi");
 
 export const registerSchema = z.object({
-  username: requiredString,
+  name: requiredString,
   email: z.string().email("Invalid format email"),
   password: requiredString.min(6),
   role: z.enum(["ADMIN", "GUEST"]),
@@ -71,5 +71,5 @@ export interface MeetingType {
   profile_id: string;
   updated_at: string;
   user_id: string;
-  users: { email: string; username?: string };
+  users: { email: string; name?: string };
 }

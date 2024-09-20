@@ -26,6 +26,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { ButtonReport } from "@/components/custom/ButtonReport";
+import { format } from "date-fns";
 
 const meetingApi = async () => {
   try {
@@ -94,7 +95,12 @@ function GetDataMeetingAdmin() {
                   }`}
                 >
                   <td className="text-sm py-2 px-4">{index + 1}</td>
-                  <td className="text-sm py-2 px-4">{item.meeting_date}</td>
+                  <td className="text-sm py-2 px-4">
+                    {format(
+                      new Date(item.meeting_date),
+                      "cccc, dd-MM-yyyy, HH:mm"
+                    )}
+                  </td>
                   <td className="text-sm py-2 px-4">
                     {item.profile.full_name}
                   </td>

@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { EyeIcon, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { format } from "date-fns";
 
 const meetingApi = async () => {
   try {
@@ -74,7 +75,12 @@ function GetDataMeeting() {
                   }`}
                 >
                   <td className="text-sm py-2 px-4">{index + 1}</td>
-                  <td className="text-sm py-2 px-4">{item.meeting_date}</td>
+                  <td className="text-sm py-2 px-4">
+                    {format(
+                      new Date(item.meeting_date),
+                      "cccc, dd-MM-yyyy, HH:mm"
+                    )}
+                  </td>
                   <td className="text-sm py-2 px-4">
                     {item?.profile?.full_name}
                   </td>

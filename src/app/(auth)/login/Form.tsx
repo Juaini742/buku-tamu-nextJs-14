@@ -80,10 +80,11 @@ function LoginForm() {
             </FormItem>
           )}
         />
-        <div className="text-xs underline my-3">
-          Sudah punya akun
-          <Link href="/register"> Klik disini untuk daftar</Link>
-        </div>
+        <Button variant="link" className="text-xs p-0">
+          <Link href="/register">
+            Sudah punya akun Klik disini untuk daftar
+          </Link>
+        </Button>
         <Button
           disabled={isPending}
           variant="default"

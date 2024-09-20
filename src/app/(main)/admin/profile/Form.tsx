@@ -32,7 +32,7 @@ function AddingUserForm() {
     resolver: zodResolver(registerSchema),
     defaultValues: {
       email: "",
-      username: "",
+      name: "",
       password: "",
       role: undefined,
     },
@@ -63,12 +63,12 @@ function AddingUserForm() {
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
-          name="username"
+          name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              <FormLabel>Nama</FormLabel>
               <FormControl>
-                <Input placeholder="Username" {...field} />
+                <Input placeholder="Masukkan nama anda" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

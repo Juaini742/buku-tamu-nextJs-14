@@ -14,7 +14,7 @@ export async function getServerProfile() {
     },
     include: {
       users: {
-        select: { username: true, email: true },
+        select: { name: true, email: true },
       },
     },
   });
@@ -30,7 +30,7 @@ export async function getServerProfile() {
     ktp: profile?.ktp,
     educate: profile?.educate,
     address: profile?.address,
-    username: profile?.users.username,
+    username: profile?.users.name,
     email: profile?.users.email,
   };
 }
