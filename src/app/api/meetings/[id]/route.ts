@@ -8,9 +8,9 @@ export async function GET(
   try {
     const { id } = params;
 
-    if (!id) {
+    if (!id || typeof id !== "string") {
       return NextResponse.json({
-        message: "id is required",
+        message: "id is required and must be a string",
         status: 400,
       });
     }
@@ -42,7 +42,7 @@ export async function GET(
       );
     }
 
-    return NextResponse.json(result);
+    return NextResponse.json(result, { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json(
@@ -59,7 +59,7 @@ export async function DELETE(
   try {
     const { id } = params;
 
-    if (!id) {
+    if (!id || typeof id !== "string") {
       return NextResponse.json({
         message: "id is required",
         status: 400,
@@ -79,7 +79,7 @@ export async function DELETE(
       );
     }
 
-    return NextResponse.json(result);
+    return NextResponse.json(result, { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json(

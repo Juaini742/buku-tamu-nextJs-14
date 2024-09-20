@@ -12,6 +12,10 @@ export async function getServerUser() {
     where: { id: session.user.id },
   });
 
+  if (!user) {
+    return null;
+  }
+
   return {
     id: user?.id,
     email: user?.email,

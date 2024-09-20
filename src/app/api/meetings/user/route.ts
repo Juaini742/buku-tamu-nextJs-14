@@ -1,14 +1,23 @@
-import { getServerUser } from "@/lib/getServerUser";
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import { auth } from "@/auth";
+
+export const dynamic = "force-dynamic";
 
 export async function GET() {
   try {
-    const user = await getServerUser();
+    const session = await auth();
+
+    if (!session || !session.user) {
+      return NextResponse.json(
+        { error: "User not authenticated" },
+        { status: 401 }
+      );
+    }
 
     const meetings = await prisma.meetings.findMany({
       where: {
-        user_id: user?.id,
+        user_id: session.user.id,
       },
       include: {
         users: {
@@ -32,7 +41,7 @@ export async function GET() {
 
     return NextResponse.json(meetingsWithBigIntToString);
   } catch (error) {
-    console.error(error);
+    console.error("Error fetching meetings:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }
